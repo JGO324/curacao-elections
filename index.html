@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <title>Gender equity in Kenya primary schools</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <link href='css/styles.css' rel='stylesheet' />
+</head>
+
+<body>
+  <div class='flex-parent viewport-full relative scroll-hidden'>
+    <div class='flex-child w-full w300-ml absolute static-ml left bottom'>
+      <div class='flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-white py18 px12'>
+        <div class='flex-child flex-child--grow px12 py12 scroll-auto'>
+          <h1 id="headtitle" class='txt-h1 mb6'>Title come here</h1>
+        
+
+          <p> </p>
+          <h2 id=headsubtitle class='txt-xl mt18 mb12'>The map</h2>
+          <p>
+            <span class="txt-bold">footer section below</span>
+          </p>
+        </div>
+        <footer class='px12 py12 bg-gray-faint txt-s'>
+          <ul>
+            <li>Explore the raw
+              <a class='link' download href='#'>Data</a>
+            </li>
+            <li>Data source
+              <a id="sourceLink" class='link' target="_blank" href='#''>Data source here</a>
+            </li>
+            <li>Map authored by
+              <a class='link' href='#'>Joël Gonçalves de Freitas</a>
+            </li>
+          </ul>
+        </footer>
+      </div>
+    </div>
+    <div class='flex-child flex-child--grow viewport-twothirds viewport-full-ml'>
+      <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+    </div>
+  </div>
+
+  <!-- ui slider -->
+  <div id="slider-container" class="">
+    <div id="grade-display" class="txt-l txt-bold bg-white round-ml absolute px12 py3">current slider position<span></span></div>
+    <div id='slider' class='range w240 bg-white round-ml px12'>
+      <input type='range' min="1" max="8" value="1" step="1" />
+    </div>
+  </div>
+
+  <!-- legend -->
+  <div id='legend' class=' flex-child-grow bg-white round-ml px18 py12'>
+
+    <div id="legend-container">
+      <h3 class='txt-bold mb12 w180 mx-auto txt-m'>Titel here <span class="girls"></span>  <span
+          class="boys"></span>
+        
+      </h3>
+      <div class='mx-auto'>
+        <div class="legend-circles relative w180">
+          <div class="legend-large border border--gray-ligh absolute"></div>
+          <div class="legend-small border border--gray-ligh absolute"></div>
+          <div class="legend-large-label txt-m absolute"></div>
+          <div class="legend-small-label txt-m absolute"></div>
+        </div>
+      </div>
+    </div>
+    <div id="gb-icon" class="">
+      <span id=b-circle class="boys"></span>
+      <span id="g-circle" class="girls"></span>
+    </div>
+  </div>
+
+  <!-- ui info panel -->
+  <div id='info' class='py6 px12 bg-white border border--gray-light round top absolute'>
+    <p>test: <span class="txt-bold"></span></p>
+    <p class='girls'>text
+      <span></span>:
+      <span class="txt-1 txt-bold"></span>
+    </p>
+    <p class='boys'>text
+      <span></span>:
+      <span class="txt-1 txt-bold"></span>
+    </p>
+    <!-- Additional elements added to the info window -->
+    <hr class="txt-hr">
+    <p class="my6">trend: text&ndash; text</p>
+    <p class="my6"><span class="girlspark"></span></p>
+    <p class="my6"><span class="boyspark"></span></p>
+
+  </div>
+
+  <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+  <script src='js/app.js'></script>
+
+
+</body>
+
+</html>

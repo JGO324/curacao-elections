@@ -1,0 +1,88 @@
+/* custom CSS rules */
+
+/* display none for layout but be careful of license restrictions */
+.mapbox-logo,
+.leaflet-control-attribution {
+  display: none;
+
+}
+
+.legend-large,
+.legend-small {
+  border-radius: 50%;
+}
+
+hr.small,
+hr.large {
+  width: 83px;
+  position: absolute;
+  top: -8px;
+  left: 55px;
+  border: 1px dashed #ccc;
+  /* overwrite assembly.css rule */
+  margin-top: 8px;
+  /* overwrite assembly.css rule */
+}
+
+.girls,
+#headtitle,
+#headsubtitle {
+  color: #d96d02;
+}
+
+.boys {
+  color: #6e77b0;
+}
+
+/* fix the display order with z-index */
+#info {
+  z-index: 1000;
+  display: none;
+}
+
+#grade-display {
+  margin-top: -45px;
+}
+
+#legend-container {
+  display: block;
+}
+@media (max-width:576px) {
+  #legend-container {
+    display: none;
+  }
+
+  #gb-icon {
+    display: block;
+    float: right;
+    /* border: 1px solid green; */
+    padding: 5px 0px;
+    margin: -6px -10px;
+  }
+
+  #g-circle {
+    background: #d96d02;
+    width: 13px;
+    height: 13px;
+    top: 0px;
+    left: 0px;
+    position: relative;
+  }
+
+  #b-circle {
+    width: 20px;
+    height: 20px;
+    top: 0px;
+    left: 0px;
+    background: #6e77b0;
+    /* position: relative; */
+  }
+
+  #b-circle,
+  #g-circle {
+    display: block;
+    float: right;
+    border-radius: 50%;
+    /* position: absolute; */
+  }
+}

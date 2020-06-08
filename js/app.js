@@ -5,10 +5,10 @@
     // center: [12.169570,-68.990021],
     center: [12.1994847, -69.00883083333333],
     zoom: 11,
-		zoomSnap: .2, // allow for smoother zooming
+    zoomSnap: .2, // allow for smoother zooming
     minZoom: 11,
     maxZoom: 18,
-    maxBounds: L.latLngBounds([12.352131688081778,-69.1857147216797], [12.042131688081778,-68.72467714965526])
+    maxBounds: L.latLngBounds([12.352131688081778, -69.1857147216797], [12.042131688081778, -68.72467714965526])
   });
 
   var accessToken = 'pk.eyJ1IjoiamdvMzI0IiwiYSI6ImNrMDlqa2dxdDA4cDAzZm4xZTg0b3BlNzUifQ.CzI3VsMtEP1CeQkNBjL3_w'
@@ -24,10 +24,10 @@
     position: 'bottomright'
   });
 
-// get coordinates on map click (temprary)
-// map.on('click',function(e){
-//   console.log(e.latlng);
-// });
+  // get coordinates on map click (temprary)
+  // map.on('click',function(e){
+  //   console.log(e.latlng);
+  // });
 
 
   // when the control is added to the map
@@ -66,17 +66,18 @@
   sliderControl.addTo(map);
   // use omnivore to load the geojson data
   omnivore.geojson('data/voting-data.geojson')
-  .on('ready', function (e) {
-    // console.log(e.target)// inspect the output
-    // console.log(e.target.toGeoJSON())// inspect the output and compare the result with the above output
-    drawMap(e.target.toGeoJSON()); //pass the data as a geoJSON format to the caller drawMap
-    drawLegend(e.target.toGeoJSON())
-  })
-  .on('error', function (e) {
-    // console.log(e.error[0].message);// inspect the output
-  }); // add the point data to the map
-  
-  const years=[2010,2012,2016,2017];
+    .on('ready', function (e) {
+      // console.log(e.target)// inspect the output
+      // console.log(e.target.toGeoJSON())// inspect the output and compare the result with the above output
+      drawMap(e.target.toGeoJSON()); //pass the data as a geoJSON format to the caller drawMap
+      drawLegend(e.target.toGeoJSON())
+    })
+    .on('error', function (e) {
+      // console.log(e.error[0].message);// inspect the output
+    }); // add the point data to the map
+
+  const years = [2010, 2012, 2016, 2017];
+
   function drawMap(data) {
     var options = {
       pointToLayer: function (feature, latlng) {
@@ -98,16 +99,16 @@
           weight: 2,
           fillOpacity: 0
         });
-        
-        
+
+
       }
     }
 
-    
+
 
     // create 2 separate layers from the geojson
     // var girlsL = L.geoJSON(data, options).addTo(map),
-      let mfk = L.geoJSON(data, options).addTo(map);
+    let mfk = L.geoJSON(data, options).addTo(map);
 
     // girlsL.setStyle({
     //   color: '#d96d02',
@@ -152,8 +153,10 @@
   function sequenceUI(girlsLayer, boysLayer) {
 
     $('#slider input[type=range]').on('input', function () {
-      console.log(this.value);// inspect the output
+      console.log(this.value); // inspect the output
       var currentGrade = this.value; // declare and assign this.value to the currentGrade
+          $('#year-display span').html(currentGrade);
+
       // resizeCircles(girlsLayer, null, currentYear); // pass the arguments variables to the caller resizeCircle function.
 
     })
@@ -243,130 +246,129 @@
 
   function retrieveInfo(boysLayer, currentGrade) {
 
-  //   // console.log(boysLayer); // inpsect the output
-  //   // select the element and reference with a variable
-  //   // and hide the element from view initially
-  //   var info = $('#info').hide();
+    //   // console.log(boysLayer); // inpsect the output
+    //   // select the element and reference with a variable
+    //   // and hide the element from view initially
+    //   var info = $('#info').hide();
 
-  //   // console.log(layer, currentGrade);
-  //   // on mouseover event, trigger layer selection and show the info window
-  //   boysLayer.on("mouseover", function (e) {
-  //     info.show();
-  //     // console.log(e.layer.feature.properties);
-  //     // declare variable props and assign the layer properties object to it 
-  //     var props = e.layer.feature.properties;
-  //     // console.log(props.COUNTY, props["G" + currentGrade], props["B" + currentGrade]); // inpsect the output
-  //     $('#info p:first-child span').html(props.COUNTY);
-  //     $('.girls span:first-child').html(`(grade ${currentGrade})`);
-  //     $('.girls span:last-child').html(Number(props["G" + currentGrade]).toLocaleString());
+    //   // console.log(layer, currentGrade);
+    //   // on mouseover event, trigger layer selection and show the info window
+    //   boysLayer.on("mouseover", function (e) {
+    //     info.show();
+    //     // console.log(e.layer.feature.properties);
+    //     // declare variable props and assign the layer properties object to it 
+    //     var props = e.layer.feature.properties;
+    //     // console.log(props.COUNTY, props["G" + currentGrade], props["B" + currentGrade]); // inpsect the output
+    //     $('#info p:first-child span').html(props.COUNTY);
+    //     $('.girls span:first-child').html(`(grade ${currentGrade})`);
+    //     $('.girls span:last-child').html(Number(props["G" + currentGrade]).toLocaleString());
 
-  //     $('.boys span:first-child').html(`(grade ${currentGrade})`);
-  //     $('.boys span:last-child').html(Number(props["B" + currentGrade]).toLocaleString());
+    //     $('.boys span:first-child').html(`(grade ${currentGrade})`);
+    //     $('.boys span:last-child').html(Number(props["B" + currentGrade]).toLocaleString());
 
-  //     /*************** Sparkline Chart *****************/
-  //     // declare girlsValue and boysValues array
-  //     var girlsValues = [],
-  //       boysValues = [];
+    //     /*************** Sparkline Chart *****************/
+    //     // declare girlsValue and boysValues array
+    //     var girlsValues = [],
+    //       boysValues = [];
 
-  //     // console.log(props); // inspect the output
+    //     // console.log(props); // inspect the output
 
-  //     //  loop through the grades 1 to 8
-  //     for (var i = 1; i <= 8; i++) {
-  //       // console.log(props['G'+i]);// inspect the output
-  //       girlsValues.push(props['G' + i]); // push the values into the array
-  //       $('.girlspark').sparkline(girlsValues, {
-  //         width: '180px',
-  //         height: '30px',
-  //         lineColor: '#d96d02',
-  //         fillColor: '#d96d02',
-  //         spotRadius: 0,
-  //         linewidth: 2
-  //       });
+    //     //  loop through the grades 1 to 8
+    //     for (var i = 1; i <= 8; i++) {
+    //       // console.log(props['G'+i]);// inspect the output
+    //       girlsValues.push(props['G' + i]); // push the values into the array
+    //       $('.girlspark').sparkline(girlsValues, {
+    //         width: '180px',
+    //         height: '30px',
+    //         lineColor: '#d96d02',
+    //         fillColor: '#d96d02',
+    //         spotRadius: 0,
+    //         linewidth: 2
+    //       });
 
-  //       // console.log([props['B' + i]]); // inspect the output
-  //       boysValues.push(props['B' + i]); // push the values into the array
-  //       $('.boyspark').sparkline(boysValues, {
-  //         width: '180px',
-  //         height: '30px',
-  //         lineColor: '#6e77b0',
-  //         fillColor: '#6e77b0',
-  //         spotRadius: 0,
-  //         linewidth: 2
-  //       });
-  //     }
+    //       // console.log([props['B' + i]]); // inspect the output
+    //       boysValues.push(props['B' + i]); // push the values into the array
+    //       $('.boyspark').sparkline(boysValues, {
+    //         width: '180px',
+    //         height: '30px',
+    //         lineColor: '#6e77b0',
+    //         fillColor: '#6e77b0',
+    //         spotRadius: 0,
+    //         linewidth: 2
+    //       });
+    //     }
 
-  //     e.layer.setStyle({
-  //       fillOpacity: .6
-  //     });
-  //   });
-    
-  //   // on mouseout hide the info window and reset the selection
-  //   boysLayer.on("mouseout", function (e) {
-  //     info.hide();
-  //     e.layer.setStyle({
-  //       fillOpacity: 0
-  //     });
-  //   });
-  
+    //     e.layer.setStyle({
+    //       fillOpacity: .6
+    //     });
+    //   });
 
-  // // On window resize unset any position properties
-  // $(window).resize(function () {
-    
-  //   info.css({
-  //     "left": "unset",
-  //     "right": "unset",
-  //     "top": "unset"
-  //   }); 
-  // })
+    //   // on mouseout hide the info window and reset the selection
+    //   boysLayer.on("mouseout", function (e) {
+    //     info.hide();
+    //     e.layer.setStyle({
+    //       fillOpacity: 0
+    //     });
+    //   });
 
-  // // when the mouse moves on the document
-  // $(document).mousemove(function (e) {
 
-  //   // Check document size, if less than 800...
-  //   if ($(document).width() < 800) {
+    // // On window resize unset any position properties
+    // $(window).resize(function () {
 
-  //     // ...position the info window in the upper-right corner.
-  //     info.css({
-  //       "right": 10,
-  //       "top": 10,
-  //     });
+    //   info.css({
+    //     "left": "unset",
+    //     "right": "unset",
+    //     "top": "unset"
+    //   }); 
+    // })
 
-  //   } else {
+    // // when the mouse moves on the document
+    // $(document).mousemove(function (e) {
 
-  //     console.log($(document).width() )
-  //   // first offset from the mouse position of the info window
-  //   info.css({
-  //     "left": e.pageX + 6,
-  //     "margin-top": e.pageY - info.height() - 25
-  //   });
+    //   // Check document size, if less than 800...
+    //   if ($(document).width() < 800) {
 
-  //   // console.log(info.offset().top, $(document).height()); // inspect the output
-  //   // if it crashes into the top, flip it lower right
-  //   if (info.offset().top < 4) {
-  //     info.css({
-  //       "margin-top": e.pageY + 15
-  //     });
-  //   }
-  //   // console.log(info.offset().left); // inspect the output
-  //   // if it crashes into the right, flip it to the left
-  //   if (info.offset().left + info.width() >= $(document).width() - 40) {
-  //     info.css({
-  //       "left": e.pageX - info.width() - 80
-  //     });
-  //   }
-  // }
-  // });
+    //     // ...position the info window in the upper-right corner.
+    //     info.css({
+    //       "right": 10,
+    //       "top": 10,
+    //     });
 
-}
+    //   } else {
+
+    //     console.log($(document).width() )
+    //   // first offset from the mouse position of the info window
+    //   info.css({
+    //     "left": e.pageX + 6,
+    //     "margin-top": e.pageY - info.height() - 25
+    //   });
+
+    //   // console.log(info.offset().top, $(document).height()); // inspect the output
+    //   // if it crashes into the top, flip it lower right
+    //   if (info.offset().top < 4) {
+    //     info.css({
+    //       "margin-top": e.pageY + 15
+    //     });
+    //   }
+    //   // console.log(info.offset().left); // inspect the output
+    //   // if it crashes into the right, flip it to the left
+    //   if (info.offset().left + info.width() >= $(document).width() - 40) {
+    //     info.css({
+    //       "left": e.pageX - info.width() - 80
+    //     });
+    //   }
+    // }
+    // });
+
+  }
 
 
   $('#gb-icon').on('click', function () {
     let isOpen = $("#legend-container").css("display");
-        if (isOpen=="none") {
+    if (isOpen == "none") {
       $("#legend-container").css("display", "block");
-     
-    }
-    else if (isOpen=="block") {
+
+    } else if (isOpen == "block") {
       $("#legend-container").css("display", "none");
     }
   });

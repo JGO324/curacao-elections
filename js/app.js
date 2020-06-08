@@ -2,11 +2,13 @@
 
   const map = L.map('map', {
     zoomSnap: .1,
-    center: [12.169570,-68.990021],
-    zoom: 7,
-    minZoom: 6,
-    maxZoom: 9,
-    // maxBounds: L.latLngBounds([-6.22, 27.72], [5.76, 47.83])
+    // center: [12.169570,-68.990021],
+    center: [12.1994847, -69.00883083333333],
+    zoom: 11,
+		zoomSnap: .2, // allow for smoother zooming
+    minZoom: 11,
+    maxZoom: 18,
+    maxBounds: L.latLngBounds([12.352131688081778,-69.1857147216797], [12.042131688081778,-68.72467714965526])
   });
 
   var accessToken = 'pk.eyJ1IjoiamdvMzI0IiwiYSI6ImNrMDlqa2dxdDA4cDAzZm4xZTg0b3BlNzUifQ.CzI3VsMtEP1CeQkNBjL3_w'
@@ -22,22 +24,28 @@
     position: 'bottomright'
   });
 
+// get coordinates on map click (temprary)
+// map.on('click',function(e){
+//   console.log(e.latlng);
+// });
+
+
   // when the control is added to the map
-  legendControl.onAdd = function (map) {
+  // legendControl.onAdd = function (map) {
 
-    // select the legend using id attribute of legend
-    const legend = L.DomUtil.get("legend");
+  //   // select the legend using id attribute of legend
+  //   const legend = L.DomUtil.get("legend");
 
-    // disable scroll and click functionality 
-    L.DomEvent.disableScrollPropagation(legend);
-    L.DomEvent.disableClickPropagation(legend);
+  //   // disable scroll and click functionality 
+  //   L.DomEvent.disableScrollPropagation(legend);
+  //   L.DomEvent.disableClickPropagation(legend);
 
-    // return the selection
-    return legend;
+  //   // return the selection
+  //   return legend;
 
-  }
+  // }
 
-  legendControl.addTo(map);
+  // legendControl.addTo(map);
 
   // create Leaflet control for the slider
   const sliderControl = L.control({
@@ -56,85 +64,99 @@
   }
 
   sliderControl.addTo(map);
-
-  // use omnivore to load the CSV data
-  // omnivore.csv('data/kenya_education_2014.csv')
-  //   .on('ready', function (e) {
-  //     // console.log(e.target)// inspect the output
-  //     // console.log(e.target.toGeoJSON())// inspect the output and compare the result with the above output
-  //     drawMap(e.target.toGeoJSON()); //pass the data as a geoJSON format to the caller drawMap
-  //     drawLegend(e.target.toGeoJSON())
-  //   })
-  //   .on('error', function (e) {
-  //     // console.log(e.error[0].message);// inspect the output
-  //   }); // add the point data to the map
-
+  // use omnivore to load the geojson data
+  omnivore.geojson('data/voting-data.geojson')
+  .on('ready', function (e) {
+    // console.log(e.target)// inspect the output
+    // console.log(e.target.toGeoJSON())// inspect the output and compare the result with the above output
+    drawMap(e.target.toGeoJSON()); //pass the data as a geoJSON format to the caller drawMap
+    drawLegend(e.target.toGeoJSON())
+  })
+  .on('error', function (e) {
+    // console.log(e.error[0].message);// inspect the output
+  }); // add the point data to the map
+  
+  const years=[2010,2012,2016,2017];
   function drawMap(data) {
-    // var options = {
-    //   pointToLayer: function (feature, latlng) {
-    //     // console.log(feature);// inspect the output
-    //     return L.circleMarker(latlng, {
-    //       opacity: 1,
-    //       weight: 2,
-    //       fillOpacity: 0
-    //     });
+    var options = {
+      pointToLayer: function (feature, latlng) {
 
+        // console.log(Object.entries(feature.properties));// inspect the output
+        // feature.properties
+        // Object.entries(feature.properties).forEach(polName => {
+        //   // console.log(polName);
+        //   if(polName[0].includes(years[0]))
+        //   {
+        //     var patt = /2016/i;
+        //     var result = polName[0].match(patt);
+        //     years.push(result.sort())
+        //     // console.log(result);
+        //   }
+        // });
+        return L.circleMarker(latlng, {
+          opacity: 1,
+          weight: 2,
+          fillOpacity: 0
+        });
+        
+        
+      }
+    }
 
-    //   }
-    // }
-
-    // get coordinates on map click
+    
 
     // create 2 separate layers from the geojson
     // var girlsL = L.geoJSON(data, options).addTo(map),
-    //   boysL = L.geoJSON(data, options).addTo(map);
+      let mfk = L.geoJSON(data, options).addTo(map);
 
     // girlsL.setStyle({
     //   color: '#d96d02',
     // });
-    // boysL.setStyle({
-    //   color: '#6e77b0'
-    // });
+    mfk.setStyle({
+      color: '#6e77b0'
+    });
     // // console.log(boys);
     // // console.log(girls);
 
-    map.fitBounds(boysL.getBounds()); // get extent of the boys layer
+    map.fitBounds(mfk.getBounds()); // get extent of the boys layer
     map.setZoom(map.getZoom() - .4); // adjust the zoom level
     // resizeCircles(girlsL, boysL, 1);
 
-    // sequenceUI(girlsL, boysL);
+    sequenceUI(mfk, null);
+    console.log(years);
+
   } // end of drawMap().
 
   function calculateRadius(val) {
 
-    // var radius = Math.sqrt(val / Math.PI); // calculate the radius
-    // return radius * .5; // adjust the radius with .5 scale factor
+    var radius = Math.sqrt(val / Math.PI); // calculate the radius
+    return radius * .5; // adjust the radius with .5 scale factor
   } // end of calculateRadius()
 
-  function resizeCircles(girlsLayers, boysLayers, currentGrade) {
+  function resizeCircles(girlsLayers, boysLayers, currentYear) {
     // girlsLayers.eachLayer(function (layer) {
 
     //   var r = calculateRadius(layer.feature.properties['G' + currentGrade]);
     //   layer.setRadius(r);
     // });
 
-    // boysLayers.eachLayer(function (layer) {
+    boysLayers.eachLayer(function (layer) {
 
-    //   var r = calculateRadius(layer.feature.properties['B' + currentGrade]);
-    //   layer.setRadius(r);
-    // });
+      // var r = calculateRadius(layer.feature.properties['B' + currentGrade]);
+      // layer.setRadius(r);
+    });
     // retrieveInfo(boysLayers, currentGrade); // call the retrieveInfo function to show the popup info
     // $('#grade-display span').html(currentGrade);
   } // end of resizeCircles()
 
   function sequenceUI(girlsLayer, boysLayer) {
 
-    // $('#slider input[type=range]').on('input', function () {
-    //   // console.log(this.value);// inspect the output
-    //   var currentGrade = this.value; // declare and assign this.value to the currentGrade
-    //   resizeCircles(girlsLayer, boysLayer, currentGrade); // pass the arguments variables to the caller resizeCircle function.
+    $('#slider input[type=range]').on('input', function () {
+      console.log(this.value);// inspect the output
+      var currentGrade = this.value; // declare and assign this.value to the currentGrade
+      // resizeCircles(girlsLayer, null, currentYear); // pass the arguments variables to the caller resizeCircle function.
 
-    // })
+    })
   } // end of sequenceUi()
 
   function drawLegend(data) {

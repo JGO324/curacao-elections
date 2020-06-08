@@ -12,27 +12,24 @@
   border-radius: 50%;
 }
 
-hr.small,
+/* hr.small,
 hr.large {
   width: 83px;
   position: absolute;
   top: -8px;
   left: 55px;
   border: 1px dashed #ccc;
-  /* overwrite assembly.css rule */
   margin-top: 8px;
-  /* overwrite assembly.css rule */
-}
+} */
 
-.girls,
 #headtitle,
 #headsubtitle {
   color: #d96d02;
 }
 
-.boys {
+/* .boys {
   color: #6e77b0;
-}
+} */
 
 /* fix the display order with z-index */
 #info {
@@ -47,6 +44,16 @@ hr.large {
 #legend-container {
   display: block;
 }
+
+.mfk
+{
+  color: #6e77b0;
+}
+
+.mkp
+{
+  color:#ff1a1a;
+}
 @media (max-width:576px) {
   #legend-container {
     display: none;
@@ -60,29 +67,27 @@ hr.large {
     margin: -6px -10px;
   }
 
-  #g-circle {
+  /* #g-circle {
     background: #d96d02;
     width: 13px;
     height: 13px;
     top: 0px;
     left: 0px;
     position: relative;
-  }
+  } */
 
-  #b-circle {
+  /* #b-circle {
     width: 20px;
     height: 20px;
     top: 0px;
     left: 0px;
     background: #6e77b0;
-    /* position: relative; */
-  }
+  } */
 
-  #b-circle,
+  /* #b-circle,
   #g-circle {
     display: block;
     float: right;
     border-radius: 50%;
-    /* position: absolute; */
-  }
+  } */
 }

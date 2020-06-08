@@ -76,24 +76,12 @@
       // console.log(e.error[0].message);// inspect the output
     }); // add the point data to the map
 
-  const years = [2010, 2012, 2016, 2017];
+  // const years = [2010, 2012, 2016, 2017];
 
   function drawMap(data) {
     var options = {
       pointToLayer: function (feature, latlng) {
 
-        // console.log(Object.entries(feature.properties));// inspect the output
-        // feature.properties
-        // Object.entries(feature.properties).forEach(polName => {
-        //   // console.log(polName);
-        //   if(polName[0].includes(years[0]))
-        //   {
-        //     var patt = /2016/i;
-        //     var result = polName[0].match(patt);
-        //     years.push(result.sort())
-        //     // console.log(result);
-        //   }
-        // });
         return L.circleMarker(latlng, {
           opacity: 1,
           weight: 2,
@@ -121,43 +109,42 @@
 
     map.fitBounds(mfk.getBounds()); // get extent of the boys layer
     map.setZoom(map.getZoom() - .4); // adjust the zoom level
-    // resizeCircles(girlsL, boysL, 1);
+    resizeCircles(mfk, null, 2016);
 
     sequenceUI(mfk, null);
-    console.log(years);
 
   } // end of drawMap().
 
   function calculateRadius(val) {
 
     var radius = Math.sqrt(val / Math.PI); // calculate the radius
-    return radius * .5; // adjust the radius with .5 scale factor
+    return radius * 1.5; // adjust the radius with .5 scale factor
   } // end of calculateRadius()
 
   function resizeCircles(girlsLayers, boysLayers, currentYear) {
-    // girlsLayers.eachLayer(function (layer) {
-
-    //   var r = calculateRadius(layer.feature.properties['G' + currentGrade]);
-    //   layer.setRadius(r);
-    // });
-
-    boysLayers.eachLayer(function (layer) {
-
-      // var r = calculateRadius(layer.feature.properties['B' + currentGrade]);
-      // layer.setRadius(r);
+    girlsLayers.eachLayer(function (layer) {
+      console.log(layer);
+      var r = calculateRadius(layer.feature.properties['MFK' + currentYear]);
+      layer.setRadius(r);
     });
-    // retrieveInfo(boysLayers, currentGrade); // call the retrieveInfo function to show the popup info
-    // $('#grade-display span').html(currentGrade);
+
+    // boysLayers.eachLayer(function (layer) {
+
+    //   // var r = calculateRadius(layer.feature.properties['B' + currentGrade]);
+    //   // layer.setRadius(r);
+    // });
+    retrieveInfo(girlsLayers, currentYear); // call the retrieveInfo function to show the popup info
+    $('#year-display span').html(" "+currentYear );
   } // end of resizeCircles()
 
   function sequenceUI(girlsLayer, boysLayer) {
 
     $('#slider input[type=range]').on('input', function () {
       console.log(this.value); // inspect the output
-      var currentGrade = this.value; // declare and assign this.value to the currentGrade
-          $('#year-display span').html(currentGrade);
+      var currentYear = this.value; // declare and assign this.value to the currentGrade
+          // $('#year-display span').html(currentYear);
 
-      // resizeCircles(girlsLayer, null, currentYear); // pass the arguments variables to the caller resizeCircle function.
+      resizeCircles(girlsLayer, null, currentYear); // pass the arguments variables to the caller resizeCircle function.
 
     })
   } // end of sequenceUi()
@@ -244,72 +231,72 @@
 
   } // end of drawLegend()
 
-  function retrieveInfo(boysLayer, currentGrade) {
+  function retrieveInfo(boysLayer, currentYear) {
 
-    //   // console.log(boysLayer); // inpsect the output
-    //   // select the element and reference with a variable
-    //   // and hide the element from view initially
-    //   var info = $('#info').hide();
+      // console.log(boysLayer); // inpsect the output
+      // select the element and reference with a variable
+      // and hide the element from view initially
+      var info = $('#info').hide();
 
-    //   // console.log(layer, currentGrade);
-    //   // on mouseover event, trigger layer selection and show the info window
-    //   boysLayer.on("mouseover", function (e) {
-    //     info.show();
-    //     // console.log(e.layer.feature.properties);
-    //     // declare variable props and assign the layer properties object to it 
-    //     var props = e.layer.feature.properties;
-    //     // console.log(props.COUNTY, props["G" + currentGrade], props["B" + currentGrade]); // inpsect the output
-    //     $('#info p:first-child span').html(props.COUNTY);
-    //     $('.girls span:first-child').html(`(grade ${currentGrade})`);
-    //     $('.girls span:last-child').html(Number(props["G" + currentGrade]).toLocaleString());
+      // console.log(layer, currentGrade);
+      // on mouseover event, trigger layer selection and show the info window
+      boysLayer.on("mouseover", function (e) {
+        info.show();
+        // console.log(e.layer.feature.properties);
+        // declare variable props and assign the layer properties object to it 
+        var props = e.layer.feature.properties;
+        // console.log(props.COUNTY, props["G" + currentGrade], props["B" + currentGrade]); // inpsect the output
+        $('#info p:first-child span').html(props.MFK2016);
+        $('.girls span:first-child').html(`(Year ${currentYear})`);
+        // $('.girls span:last-child').html(Number(props["G" + currentGrade]).toLocaleString());
 
-    //     $('.boys span:first-child').html(`(grade ${currentGrade})`);
-    //     $('.boys span:last-child').html(Number(props["B" + currentGrade]).toLocaleString());
+        // $('.boys span:first-child').html(`(grade ${currentGrade})`);
+        // $('.boys span:last-child').html(Number(props["B" + currentGrade]).toLocaleString());
 
-    //     /*************** Sparkline Chart *****************/
-    //     // declare girlsValue and boysValues array
-    //     var girlsValues = [],
-    //       boysValues = [];
+        /*************** Sparkline Chart *****************/
+        // declare girlsValue and boysValues array
+        // var girlsValues = [],
+        //   boysValues = [];
 
-    //     // console.log(props); // inspect the output
+        // console.log(props); // inspect the output
 
-    //     //  loop through the grades 1 to 8
-    //     for (var i = 1; i <= 8; i++) {
-    //       // console.log(props['G'+i]);// inspect the output
-    //       girlsValues.push(props['G' + i]); // push the values into the array
-    //       $('.girlspark').sparkline(girlsValues, {
-    //         width: '180px',
-    //         height: '30px',
-    //         lineColor: '#d96d02',
-    //         fillColor: '#d96d02',
-    //         spotRadius: 0,
-    //         linewidth: 2
-    //       });
+        //  loop through the grades 1 to 8
+        // for (var i = 1; i <= 8; i++) {
+        //   // console.log(props['G'+i]);// inspect the output
+        //   girlsValues.push(props['G' + i]); // push the values into the array
+        //   $('.girlspark').sparkline(girlsValues, {
+        //     width: '180px',
+        //     height: '30px',
+        //     lineColor: '#d96d02',
+        //     fillColor: '#d96d02',
+        //     spotRadius: 0,
+        //     linewidth: 2
+        //   });
 
-    //       // console.log([props['B' + i]]); // inspect the output
-    //       boysValues.push(props['B' + i]); // push the values into the array
-    //       $('.boyspark').sparkline(boysValues, {
-    //         width: '180px',
-    //         height: '30px',
-    //         lineColor: '#6e77b0',
-    //         fillColor: '#6e77b0',
-    //         spotRadius: 0,
-    //         linewidth: 2
-    //       });
-    //     }
+        //   // console.log([props['B' + i]]); // inspect the output
+        //   boysValues.push(props['B' + i]); // push the values into the array
+        //   $('.boyspark').sparkline(boysValues, {
+        //     width: '180px',
+        //     height: '30px',
+        //     lineColor: '#6e77b0',
+        //     fillColor: '#6e77b0',
+        //     spotRadius: 0,
+        //     linewidth: 2
+        //   });
+        // }
 
-    //     e.layer.setStyle({
-    //       fillOpacity: .6
-    //     });
-    //   });
+        e.layer.setStyle({
+          fillOpacity: .6
+        });
+      });
 
-    //   // on mouseout hide the info window and reset the selection
-    //   boysLayer.on("mouseout", function (e) {
-    //     info.hide();
-    //     e.layer.setStyle({
-    //       fillOpacity: 0
-    //     });
-    //   });
+      // on mouseout hide the info window and reset the selection
+      boysLayer.on("mouseout", function (e) {
+        info.hide();
+        e.layer.setStyle({
+          fillOpacity: 0
+        });
+      });
 
 
     // // On window resize unset any position properties
@@ -323,42 +310,42 @@
     // })
 
     // // when the mouse moves on the document
-    // $(document).mousemove(function (e) {
+    $(document).mousemove(function (e) {
 
     //   // Check document size, if less than 800...
-    //   if ($(document).width() < 800) {
+      if ($(document).width() < 800) {
 
-    //     // ...position the info window in the upper-right corner.
-    //     info.css({
-    //       "right": 10,
-    //       "top": 10,
-    //     });
+        // ...position the info window in the upper-right corner.
+        info.css({
+          "right": 10,
+          "top": 10,
+        });
 
-    //   } else {
+      } else {
 
-    //     console.log($(document).width() )
-    //   // first offset from the mouse position of the info window
-    //   info.css({
-    //     "left": e.pageX + 6,
-    //     "margin-top": e.pageY - info.height() - 25
-    //   });
+        // console.log($(document).width() )
+      // first offset from the mouse position of the info window
+      info.css({
+        "left": e.pageX + 6,
+        "margin-top": e.pageY - info.height() - 25
+      });
 
-    //   // console.log(info.offset().top, $(document).height()); // inspect the output
-    //   // if it crashes into the top, flip it lower right
-    //   if (info.offset().top < 4) {
-    //     info.css({
-    //       "margin-top": e.pageY + 15
-    //     });
-    //   }
-    //   // console.log(info.offset().left); // inspect the output
-    //   // if it crashes into the right, flip it to the left
-    //   if (info.offset().left + info.width() >= $(document).width() - 40) {
-    //     info.css({
-    //       "left": e.pageX - info.width() - 80
-    //     });
-    //   }
-    // }
-    // });
+      // console.log(info.offset().top, $(document).height()); // inspect the output
+      // if it crashes into the top, flip it lower right
+      if (info.offset().top < 4) {
+        info.css({
+          "margin-top": e.pageY + 15
+        });
+      }
+      // console.log(info.offset().left); // inspect the output
+      // if it crashes into the right, flip it to the left
+      if (info.offset().left + info.width() >= $(document).width() - 40) {
+        info.css({
+          "left": e.pageX - info.width() - 80
+        });
+      }
+    }
+    });
 
   }
 

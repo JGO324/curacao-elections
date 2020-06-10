@@ -167,12 +167,23 @@
       console.log(props);
       // console.log(Object.entries(props));
       Object.entries(props).forEach(name => {
-        if (name[0].includes("MFK") || name[0].includes("MKP")) {
+        if (name[0].includes("MFK")) {
 
           let n = name[0].replace(/[0-9]/g, ''); // remove years from the string
           console.log(props);
+          console.log(n);
           $('#info h3').html(`${props.Location}</br>`);
           $('#info p.mfk span').html(`${n}: ${props.MFK2016}</br>`);
+          // $('#info p.mkp span').html(`${n}: ${props.MKP2016}</br>`);
+
+        }
+        if (name[0].includes("MKP")) {
+
+          let n = name[0].replace(/[0-9]/g, ''); // remove years from the string
+          console.log(props);
+          console.log(n);
+          $('#info h3').html(`${props.Location}</br>`);
+          // $('#info p.mfk span').html(`${n}: ${props.MFK2016}</br>`);
           $('#info p.mkp span').html(`${n}: ${props.MKP2016}</br>`);
 
         }

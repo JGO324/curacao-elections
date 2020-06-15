@@ -14,9 +14,12 @@
 <body>
   <div class='flex-parent viewport-full relative scroll-hidden'>
     <div class='flex-child w-full w300-ml absolute static-ml left bottom'>
-      <div class='flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-white py18 px12'>
+      <div class='flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-black py18 px12'>
         <div class='flex-child flex-child--grow px12 py12 scroll-auto'>
-          <h1 id="headtitle" class='txt-h1 mb6'>Election of Curacao</h1>
+
+            <ul class="location-list">
+            </ul>
+          <!-- <h1 id="headtitle" class='txt-h1 mb6'>Election of Curacao</h1>
           Adipisicing incididunt do deserunt est exercitation esse occaecat reprehenderit veniam in velit labore. Minim
           nostrud nostrud est voluptate velit deserunt nisi amet amet ullamco cillum eiusmod. Pariatur quis commodo
           proident adipisicing reprehenderit. Elit pariatur ullamco et voluptate aliqua laborum id. Enim aliquip cillum
@@ -30,7 +33,7 @@
           <h2 id=headsubtitle class='txt-xl mt18 mb12'>The map</h2>
           <p>
             <span class="txt-bold"></span>
-          </p>
+          </p> -->
         </div>
         <footer class='px12 py12 bg-gray-faint txt-s'>
           <ul>
@@ -56,37 +59,24 @@
   <div id="slider-container" class="">
     <div id="year-display" class="txt-l txt-bold bg-white round-ml absolute px12 py3">Year:<span> 2010</span></div>
     <div id='slider' class='range w240 bg-white round-ml px12'>
-      <input type='range' min="2010" max="2017" value="2016" step="1" />
+      <input id="sliderVal" type='range' min="2010" max="2017" value="2016" step="1" />
     </div>
   </div>
 
   <!-- legend -->
 
-  <!-- <div id='legend' class=' flex-child-grow bg-white round-ml px18 py12'>
+  <div id='legend' class=' flex-child-grow round-l px18 py12'>
 
     <div id="legend-container">
-      <h3 class='txt-bold mb12 w180 mx-auto txt-m'>Titel here <span class="girls"></span>  <span
-          class="boys"></span>
-        
-      </h3>
-      <div class='mx-auto'>
-        <div class="legend-circles relative w180">
-          <div class="legend-large border border--gray-ligh absolute"></div>
-          <div class="legend-small border border--gray-ligh absolute"></div>
-          <div class="legend-large-label txt-m absolute"></div>
-          <div class="legend-small-label txt-m absolute"></div>
-        </div>
-      </div>
+      <h3 class='txt-bold mb12 w180 mx-auto txt-m'>Political Parties</h3>
+      <ul class="list-parties"></ul>
     </div>
-    <div id="gb-icon" class="">
-      <span id=b-circle class="boys"></span>
-      <span id="g-circle" class="girls"></span>
-    </div>
-  </div> -->
+
+  </div>
 
   <!-- ui info panel -->
   <div id='info' class='py6 px12 bg-white border border--gray-light round top absolute'>
-      <h3></h3>
+    <h3></h3>
     </hr>
     <p class='mfk'>
       <!-- <span></span> -->

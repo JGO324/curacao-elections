@@ -161,7 +161,7 @@
 
           // console.log(name[i], feature);
           let pol_party = name[i][0];
-          console.log(pol_party);
+          // console.log(pol_party);
           let split = pol_party.split('_');
           let splitPolParty = split[0];
           // let year = split[1];
@@ -281,23 +281,19 @@
   function retrieveInfo(data, currentY) {
 
     console.log(data.feature.properties, currentY);
-    inf = `<div class='infoL'><h6>${data.feature.properties.Location}</h6><p></p></div>`;
-    // for (var i in data.feature.properties) {
-    //   if (i.includes(currentY)) {
-    //     console.log(i,data.feature.properties[i]);
-    //     $(".infoL p").append("test");
-    //   }
-    // }
+
+    let infoPopup ='';
+   for (var i in data.feature.properties) {
+      if (i.includes(currentY)) {
+        console.log(i,data.feature.properties[i]);
+        infoPopup+=`${i} ${data.feature.properties[i]}</br>`;
+       
+      }
+    }
 
 
-    data.bindPopup(inf).openPopup();
-    // let inf=`<div>
-    // ${data.feature.properties.Location}
-
-    // ${data.feature.properties["MFK_"+$("#sliderVal").val()]}
-
-
-    // </div>`;
+    data.bindPopup(infoPopup).openPopup();
+ 
 
 
   }

@@ -235,7 +235,7 @@
         let l = L.geoJSON(data, options).addTo(map);
       }
     }
-
+    $('#year-display span').html(currentYear);
     // let l = L.geoJSON(data, options).addTo(map);
   } // end of updateMap function
 
@@ -244,7 +244,8 @@
 
     $('#slider input[type=range]').on('input', function () {
       // console.log(this.value); // inspect the output
-      var currentYear = this.value; // declare and assign this.value to the currentGrade
+      const currentYear = this.value; // declare and assign this.value to the currentGrade
+      
       // resizeCircles(girlsLayer, boysLayer, currentYear); // pass the arguments variables to the caller resizeCircle function.
       updateMap(data, currentYear);
     })

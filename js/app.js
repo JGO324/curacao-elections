@@ -130,12 +130,73 @@
     //     let l = L.geoJSON(data, options).addTo(map);
     //   }
     // }
-    updateMap(data, $("#sliderVal").val());
+    // updateMap(data, $("#sliderVal").val());
+    
+    geoJsonPrecincts = {}
+    for (party in polParties) {
+
+      let options = {
+        pointToLayer: function (feature, latlng) {
+         
+          return L.circleMarker(latlng, {
+            color: polParties[party],
+            radius: 2,
+            opacity: 0,
+            weight: 3,
+            fillOpacity: 0
+          });
+        },
+        onEachFeature: function (feature, layer) {
+  
+          layer.on("click", function () {
+  
+            retrieveInfo(layer, $("#sliderVal").val());
+          });
+        }
+  
+      }
+
+      geoJsonPrecincts[party] = L.geoJSON(data, options).addTo(map);
+      console.log(geoJsonPrecincts)
+
+    }
+    mapParties (geoJsonPrecincts, $("#sliderVal").val(), '')
     addPartyList(data, $("#sliderVal").val());
     locationList(data);
     sliderUI(data);
   } // end of drawMap function
 
+  function mapParties (data, year, party) {
+
+    for (party in data) {
+      data[party].eachLayer(function(layer){
+        for (let [key, value] of Object.entries(layer.feature.properties)) {
+          if (key == `${party}_${year}`){
+            console.log(key)
+            layer.setStyle( {
+              color: polParties[party],
+              radius: calculateRadius(Number(layer.feature.properties[key])),
+                opacity: 1,
+                weight: 3,
+                fillOpacity: 0
+            }
+              
+            )
+          }
+        }
+    })
+
+    }
+
+    
+}
+       
+
+          
+
+
+      
+     
 
   function calculateRadius(val) {
 
@@ -161,7 +222,7 @@
 
           // console.log(name[i], feature);
           let pol_party = name[i][0];
-          console.log(pol_party);
+          // console.log(pol_party);
           let split = pol_party.split('_');
           let splitPolParty = split[0];
           // let year = split[1];
@@ -181,15 +242,18 @@
 
 
     // console.log(polParties[x], x);
+    const smallListParties = {}
     for (let i = 0; i < parties.length; i++) {
         // console.log(parties[i], i);
       // $(".list-parties").append(`<li>${parties[i]}</li>`); 
+      
       for (var x in polParties) {
         if (x == parties[i]) {
-          // console.log(parties[i], x);
+          console.log(parties[i], x);
           // check for matched names
           if (parties[i] == x) {
-            $(".list-parties").append(`<li style="background:${polParties[x]}">${parties[i]}</li>`); // create list
+            smallListParties[parties[i]] = polParties[x]
+            $(".list-parties").append(`<li id="${parties[i]}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
           }
 
         }
@@ -199,13 +263,36 @@
 
     }
 
+    for (let x in smallListParties) {
+      // console.log(x, smallListParties[x])
+      $(`#${x}`).on('click', function(e) {
+        let color = $(`#${x}`).css("background-color");
+        console.log(smallListParties[x])
+
+        if (color == 'rgb(128, 128, 128)') {
+          console.log(x)
+          // e.target.style.backgroundColor = smallListParties[x]
+          $(`#${x}`).css("background-color", smallListParties[x]);
+          removeParties(data, x)
+        } else {
+          e.target.style.backgroundColor = 'gray'
+        }
+        // mapParties(e, data, currentY, x, smallListParties)
+
+      })
+    }
+
   } // end of addPartyList function
+
+  function removeParties (data, party) {
+    
+  }
 
   function updateMap(data, currentYear) {
     for (var key in data.features[0].properties) {
 
       if (key.includes("_" + currentYear) && key != "sd_id") {
-        // console.log(key)
+        console.log(key)
         let politicaParty = key;
         var options = {
           pointToLayer: function (feature, latlng) {

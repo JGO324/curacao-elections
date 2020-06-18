@@ -250,21 +250,25 @@
     })
 
   } // end of sliderUI function
-
+  
   function locationList(data) {
     // console.log(data.features);
+    let flyToPrecinct = {}
     for (var x in data.features) {
       // console.log(data.features[x]);
       let props = data.features[x].properties;
-      // console.log(props.Location);
-      $(".location-list").append(`<li class="location_item" id="loc_${props.sd_id}">${props.sd_id} ${props.Location}</li>`); // create list
+      let coords = data.features[x].geometry.coordinates
+      flyToPrecinct[`loc_${props.sd_id}`] = [coords[1], coords[0]]
+
+      $(".location-list").append(`<li class="location_item" title="${coords[1]} ${coords[0]}"
+                id="loc_${props.sd_id}">${props.sd_id} ${props.Location}</li>`); // create list
+
     }
     $(".location_item").on("mouseover", function (e) {
 
       $("#" + e.target.id).css("background-color", "green");
       $("#" + e.target.id).css("cursor", "pointer");
       //  let splitItemId=e.target.id.split("_");
-
 
     });
 
@@ -275,8 +279,20 @@
 
     });
 
-
+    for (xy in flyToPrecinct ) { 
+      $(`#${xy}`).on("click", function (e) {
+        const latlng = e.target.title.split(" ")
+        const flyTo = [Number(latlng[0]), Number(latlng[1])]
+        console.log(latlng, flyTo, flyToPrecinct[xy])
+  
+       map.flyTo(flyTo, 18)
+  
+     });
+  
+  
+    }
   } // end of locationList function
+
 
   function retrieveInfo(data, currentY) {
 

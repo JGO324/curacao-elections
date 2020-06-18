@@ -157,11 +157,10 @@
       }
 
       geoJsonPrecincts[party] = L.geoJSON(data, options).addTo(map);
-      console.log(geoJsonPrecincts)
 
     }
     mapParties (geoJsonPrecincts, $("#sliderVal").val(), '')
-    addPartyList(data, $("#sliderVal").val());
+    addPartyList(data, geoJsonPrecincts, $("#sliderVal").val());
     locationList(data);
     sliderUI(data);
   } // end of drawMap function
@@ -179,26 +178,17 @@
                 opacity: 1,
                 weight: 3,
                 fillOpacity: 0
-            }
-              
-            )
+            })
           }
         }
-    })
-
+      })
     }
 
-    
 }
        
 
-          
 
-
-      
-     
-
-  function calculateRadius(val) {
+function calculateRadius(val) {
 
     var radius = Math.sqrt(val / Math.PI); // calculate the radius
     return radius * 5; // adjust the radius with .5 scale factor
@@ -210,7 +200,7 @@
 
   } // end of resizeCircles()
 
-  function addPartyList(data, currentY) {
+  function addPartyList(data, geoJsonPrecincts, currentY) {
     let parties = [];
     // console.log(data.features);
     data.features.forEach(feature => {
@@ -255,12 +245,8 @@
             smallListParties[parties[i]] = polParties[x]
             $(".list-parties").append(`<li id="${parties[i]}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
           }
-
         }
-
       }
-
-
     }
 
     for (let x in smallListParties) {
@@ -273,9 +259,10 @@
           console.log(x)
           // e.target.style.backgroundColor = smallListParties[x]
           $(`#${x}`).css("background-color", smallListParties[x]);
-          removeParties(data, x)
+          addParties(x, geoJsonPrecincts)
         } else {
           e.target.style.backgroundColor = 'gray'
+          removeParties(x, geoJsonPrecincts)
         }
         // mapParties(e, data, currentY, x, smallListParties)
 
@@ -284,8 +271,32 @@
 
   } // end of addPartyList function
 
-  function removeParties (data, party) {
-    
+  function removeParties (party, geoJsonPrecincts) {
+    for (precinct in geoJsonPrecincts) {
+      console.log(party, precinct)
+      if (party == precinct) {
+        geoJsonPrecincts[party].eachLayer(function(layer){
+              layer.setStyle( {
+                  opacity: 0
+              })
+            
+          })
+      }
+    }
+  }
+
+  function addParties (party, geoJsonPrecincts) {
+    for (precinct in geoJsonPrecincts) {
+      console.log(party, precinct)
+      if (party == precinct) {
+        geoJsonPrecincts[party].eachLayer(function(layer){
+              layer.setStyle( {
+                  opacity: 1
+              })
+            
+          })
+      }
+    }
   }
 
   function updateMap(data, currentYear) {

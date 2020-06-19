@@ -25,15 +25,25 @@
   display: none;
 }
 
-#year-display {
-  margin-top: -45px;
+.infoWindow {
+  margin: 0 0 8px 0;
 }
 
-#legend {
-  display: block;
-  background: rgba(0, 0, 0,.5);
-  box-shadow: 0px 0px 10px 0.5px rgb(83, 83, 83);
-  color:whitesmoke;
+.infoWindow,#legend {
+  display: block !important;
+  background: rgba(0, 0, 0,.85) !important;
+  box-shadow: 0px 0px 5px 0.5px rgb(83, 83, 83) !important;
+  color:whitesmoke !important;
+}
+#slider
+{
+  background: rgba(0, 0, 0,.85);
+  box-shadow: 0px 0px 5px 0.5px rgb(83, 83, 83) !important;
+
+}
+#sliderVal
+{
+color: whitesmoke;
 }
 
 .list-parties li

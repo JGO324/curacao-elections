@@ -6,6 +6,8 @@
   <title>Elections of Curacao</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+    integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
   <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
   <link href='css/styles.css' rel='stylesheet' />
@@ -17,8 +19,8 @@
       <div class='flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-black py18 px12'>
         <div class='flex-child flex-child--grow px12 py12 scroll-auto'>
 
-            <ul class="location-list">
-            </ul>
+          <ul class="location-list">
+          </ul>
           <!-- <h1 id="headtitle" class='txt-h1 mb6'>Election of Curacao</h1>
           Adipisicing incididunt do deserunt est exercitation esse occaecat reprehenderit veniam in velit labore. Minim
           nostrud nostrud est voluptate velit deserunt nisi amet amet ullamco cillum eiusmod. Pariatur quis commodo
@@ -57,8 +59,15 @@
 
   <!-- ui slider -->
   <div id="slider-container" class="">
-    <div id="year-display" class="txt-l txt-bold bg-white round-ml absolute px12 py3">Year:<span> 2010</span></div>
-    <div id='slider' class='range w240 bg-white round-ml px12'>
+    <div class="infoWindow txt-l txt-bold bg-white round-ml px12 py3 ">
+      <div><i class="fas fa-camera"></i></div>
+      <div id="year-display" class="">Year:<span> 2010</span></div>
+      <h1 id="location-name"></h1>
+      <div class="party-name">
+      </div>
+
+    </div>
+    <div id='slider' class='range w240 round-ml px12'>
       <input id="sliderVal" type='range' min="2010" max="2017" value="2016" step="1" />
     </div>
   </div>

@@ -180,13 +180,13 @@
     // console.log(parties);
 
 
-    // console.log(polParties[x], x);
+    // console.log(polParties);
+    // console.log(parties);
     for (let i = 0; i < parties.length; i++) {
-        // console.log(parties[i], i);
       // $(".list-parties").append(`<li>${parties[i]}</li>`); 
       for (var x in polParties) {
         if (x == parties[i]) {
-          // console.log(parties[i], x);
+          // console.log(parties[i], x);// inspect output
           // check for matched names
           if (parties[i] == x) {
             $(".list-parties").append(`<li style="background:${polParties[x]}">${parties[i]}</li>`); // create list
@@ -281,19 +281,29 @@
 
   function retrieveInfo(data, currentY) {
 
-    console.log(data.feature.properties, currentY);
+    console.log(data.feature.properties);
 
     let infoPopup ='';
+    if($('.list-names'))
+    {
+      $('.list-names').remove();
+    }
+    // infoPopup=$('#location-name').html(data.feature.properties.Location);
+    infoPopup=$('#location-name').html(`location nr: ${data.feature.properties.sd_id}</br>${data.feature.properties.Location}`);
    for (var i in data.feature.properties) {
       if (i.includes(currentY)) {
-        console.log(i,data.feature.properties[i]);
-        infoPopup+=`${i} ${data.feature.properties[i]}</br>`;
+        let splitName=i.split('_');
+        console.log(i,data.feature.properties[i]);// inspect the output
+        // ${splitName[0]} ${data.feature.properties[i]}
+        infoPopup+= $('.party-name').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>`);
+        // infoPopup+=$(`#location`);
        
       }
     }
+    // console.log($(`#${i}`).length);
 
 
-    data.bindPopup(infoPopup).openPopup();
+    // data.bindPopup(infoPopup).openPopup();
  
 
 

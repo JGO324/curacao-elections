@@ -26,41 +26,73 @@
 }
 
 .infoWindow {
+  width: auto;
   margin: 0 0 8px 0;
 }
 
-.infoWindow,#legend {
+.infoWindow,
+#legend {
   display: block !important;
-  background: rgba(0, 0, 0,.85) !important;
+  background: rgba(0, 0, 0, .85) !important;
   box-shadow: 0px 0px 5px 0.5px rgb(83, 83, 83) !important;
-  color:whitesmoke !important;
+  color: whitesmoke !important;
 }
-#slider
+
+.infoWindow .top-bar {
+  text-align: right;
+  /* padding: 5px; */
+}
+
+.infoWindow .top-bar i {
+  display: inline;
+  padding: 5px;
+}
+
+.infoWindow .top-bar i:hover {
+  cursor: pointer;
+  background: rgba(83, 83, 83, .8);
+  border-radius: 50%;
+
+}
+
+.party-name-grid {
+  display: grid;
+  grid-template-columns:150px 150px; 
+  column-gap: 5px;
+  row-gap: 3px;
+  margin-bottom: 10px;
+  /* grid-template-rows */
+}
+
+.list-names
 {
-  background: rgba(0, 0, 0,.85);
+  padding:0 0 0 5px ;
+  background-color: rgba(83, 83, 83,.5);
+}
+
+#slider {
+  background: rgba(0, 0, 0, .85);
   box-shadow: 0px 0px 5px 0.5px rgb(83, 83, 83) !important;
 
 }
-#sliderVal
-{
-color: whitesmoke;
+
+#sliderVal {
+  color: whitesmoke;
 }
 
-.list-parties li
-{
-  color:black;
+.list-parties li {
+  color: black;
   font-weight: bold;
   padding: 5px;
   margin: 5px;
   /* width: 100px; */
 }
 
-.bg-back
-{
-background-color: black;
+.bg-back {
+  background-color: black;
 }
-.location-list li
-{
+
+.location-list li {
   background: #1E1E1E;
   color: whitesmoke;
   padding: 5px;
@@ -68,8 +100,6 @@ background-color: black;
   border-radius: 5px;
   font-weight: bold;
 }
-
-
 
 
 @media (max-width:576px) {
@@ -85,5 +115,5 @@ background-color: black;
     margin: -6px -10px;
   }
 
- 
+
 }

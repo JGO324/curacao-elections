@@ -289,17 +289,28 @@
       $('.list-names').remove();
     }
     // infoPopup=$('#location-name').html(data.feature.properties.Location);
-    infoPopup=$('#location-name').html(`location nr: ${data.feature.properties.sd_id}</br>${data.feature.properties.Location}`);
+    infoPop=$('.party-name').html(`<h1>location nr: ${data.feature.properties.sd_id}</br>${data.feature.properties.Location}</h1>`);
+    infoPopup=$('.party-name').append('<div class="party-name-grid"></div>');
    for (var i in data.feature.properties) {
       if (i.includes(currentY)) {
         let splitName=i.split('_');
         console.log(i,data.feature.properties[i]);// inspect the output
         // ${splitName[0]} ${data.feature.properties[i]}
-        infoPopup+= $('.party-name').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>`);
+        infoPopup+= $('.party-name-grid').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>`);
         // infoPopup+=$(`#location`);
        
       }
     }
+
+    $('.top-bar i').on('click',function(e){
+      console.log($('.party-name').children().length);// inspect the output
+      // check if party-name class has children. Ifo so, remove party-name class on close icon clicked
+      if($('.party-name').children().length>0)
+      {
+        $('.party-name').children().remove();// remove class
+      }
+      
+    });
     // console.log($(`#${i}`).length);
 
 

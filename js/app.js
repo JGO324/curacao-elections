@@ -99,37 +99,6 @@
 
   function drawMap(data) {
 
-    // console.log(data.features);
-    // for (var key in data.features[0].properties) {
-
-    //   if (key.includes("_" + $("#sliderVal").val()) && key != "sd_id") {
-    //     // console.log(key)
-    //     let politicaParty = key;
-    //     var options = {
-    //       pointToLayer: function (feature, latlng) {
-    //       //  console.log(feature['properties'][politicaParty]);// inspect the output
-    //         let partyColor = politicaParty.substr(0, politicaParty.indexOf('_'));
-    //         // console.log(partyColor);
-    //         return L.circleMarker(latlng, {
-    //           color: polParties[partyColor],
-    //           radius: calculateRadius(Number(feature['properties'][politicaParty])),
-    //           opacity: 1,
-    //           weight: 3,
-    //           fillOpacity: 0
-    //         });
-    //       },
-    //       onEachFeature:function(feature,layer)
-    //       {
-    //         layer.on("mouseover",function(){
-    //           console.log(layer.feature);
-
-    //         });
-    //       }
-    //     }
-
-    //     let l = L.geoJSON(data, options).addTo(map);
-    //   }
-    // }
     updateMap(data, $("#sliderVal").val());
     addPartyList(data, $("#sliderVal").val());
     locationList(data);
@@ -253,35 +222,56 @@
   } // end of sliderUI function
 
   function locationList(data) {
+
     // console.log(data.features);
+    const coordList={}// declare a coordinate list object
+    
     for (var x in data.features) {
       // console.log(data.features[x]);
-      let props = data.features[x].properties;
-      // console.log(props.Location);
+      let props = data.features[x].properties;// declare and assign properties
+      let coords=data.features[x].geometry.coordinates;// declare and assign coordinates
+      
       $(".location-list").append(`<li class="location_item" id="loc_${props.sd_id}">${props.sd_id} ${props.Location}</li>`); // create list
+      coordList[`loc_${props.sd_id}`]={'coordinates':coords};// store each location Id the coordinates of that location.
     }
-    $(".location_item").on("mouseover", function (e) {
 
+    
+    
+    $(".location_item").on("mouseover", function (e) {
+      
       $("#" + e.target.id).css("background-color", "green");
       $("#" + e.target.id).css("cursor", "pointer");
       //  let splitItemId=e.target.id.split("_");
-
-
     });
-
+    
+    
     $(".location_item").on("mouseout", function (e) {
-
+      
       // console.log($("#"+e.target.id).html());
       $("#" + e.target.id).css("background-color", "#1E1E1E");
-
+      
     });
-
+    
+    
+    $(".location_item").on("click",function(e){
+      //  console.log(coordList); //inspect the output
+      for(var loc in coordList)
+      {
+        if(loc==e.target.id)
+        {
+          console.log(x,coordList[loc].coordinates);
+          const latlng=[coordList[loc].coordinates[1],coordList[loc].coordinates[0]];
+          map.flyTo(latlng,18);
+        }
+      }
+      
+    });
 
   } // end of locationList function
 
   function retrieveInfo(data, currentY) {
 
-    console.log(data.feature.properties);
+    // console.log(data.feature.properties);
 
     let infoPopup ='';
     if($('.list-names'))
@@ -294,7 +284,7 @@
    for (var i in data.feature.properties) {
       if (i.includes(currentY)) {
         let splitName=i.split('_');
-        console.log(i,data.feature.properties[i]);// inspect the output
+        // console.log(i,data.feature.properties[i]);// inspect the output
         // ${splitName[0]} ${data.feature.properties[i]}
         infoPopup+= $('.party-name-grid').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>`);
         // infoPopup+=$(`#location`);

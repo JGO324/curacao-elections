@@ -6,8 +6,10 @@
     zoomSnap: .2, // allow for smoother zooming
     minZoom: 11.5,
     maxZoom: 18,
+    defaultExtentControl:true
     // maxBounds: L.latLngBounds([12.352131688081778, -69.1857147216797], [12.042131688081778, -68.72467714965526])
   });
+
 
   var accessToken = 'pk.eyJ1IjoiamdvMzI0IiwiYSI6ImNrMDlqa2dxdDA4cDAzZm4xZTg0b3BlNzUifQ.CzI3VsMtEP1CeQkNBjL3_w'
 

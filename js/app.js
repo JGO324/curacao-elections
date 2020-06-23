@@ -107,13 +107,11 @@
     sliderUI(data);
   } // end of drawMap function
 
-
   function calculateRadius(val) {
 
     var radius = Math.sqrt(val / Math.PI); // calculate the radius
     return radius * 5; // adjust the radius with .5 scale factor
   } // end of calculateRadius()
-
 
   function resizeCircles() {
 
@@ -157,10 +155,10 @@
       // $(".list-parties").append(`<li>${parties[i]}</li>`); 
       for (var x in polParties) {
         if (x == parties[i]) {
-          // console.log(parties[i], x);// inspect output
+          console.log(parties[i], x);// inspect output
           // check for matched names
           if (parties[i] == x) {
-            $(".list-parties").append(`<li style="background:${polParties[x]}">${parties[i]}</li>`); // create list
+            $(".list-parties").append(`<li id="${parties[i]}_${currentY}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
           }
 
         }
@@ -169,7 +167,7 @@
 
 
     }
-
+    makeVisible(data,currentY);
   } // end of addPartyList function
 
   function updateMap(data, currentYear) {
@@ -209,7 +207,6 @@
     $('#year-display span').html(currentYear);
     // let l = L.geoJSON(data, options).addTo(map);
   } // end of updateMap function
-
 
   function sliderUI(data) {
 
@@ -261,9 +258,9 @@
       {
         if(loc==e.target.id)
         {
-          console.log(x,coordList[loc].coordinates);
+          // console.log(x,coordList[loc].coordinates);// inspect output
           const latlng=[coordList[loc].coordinates[1],coordList[loc].coordinates[0]];
-          map.flyTo(latlng,18);
+          map.flyTo(latlng,18,{duration:.5});
         }
       }
       
@@ -288,7 +285,9 @@
         let splitName=i.split('_');
         // console.log(i,data.feature.properties[i]);// inspect the output
         // ${splitName[0]} ${data.feature.properties[i]}
-        infoPopup+= $('.party-name-grid').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>`);
+        infoPopup+= $('.party-name-grid').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>
+        <span id='${i}'></span>`);
+        
         // infoPopup+=$(`#location`);
        
       }
@@ -312,4 +311,12 @@
 
   }
 
+  function makeVisible(data,currentY)
+  {
+    console.log(data,currentY);
+    $(".list-parties li").on('click',function(e){
+      console.log(e.target.id);
+
+    });
+  }
 })();

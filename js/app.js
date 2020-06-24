@@ -101,10 +101,11 @@
 
   function drawMap(data) {
 
-    updateMap(data, $("#sliderVal").val());
-    addPartyList(data, $("#sliderVal").val());
-    locationList(data);
-    sliderUI(data);
+    console.log(data);
+    // updateMap(data, $("#sliderVal").val());
+    // addPartyList(data, $("#sliderVal").val());
+    // locationList(data);
+    // sliderUI(data);
   } // end of drawMap function
 
   function calculateRadius(val) {

@@ -285,8 +285,7 @@
         let splitName=i.split('_');
         // console.log(i,data.feature.properties[i]);// inspect the output
         // ${splitName[0]} ${data.feature.properties[i]}
-        infoPopup+= $('.party-name-grid').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>
-        <span id='${i}'></span>`);
+        infoPopup+= $('.party-name-grid').append(`<div class='list-names' id='${i}'>${splitName[0]}: ${data.feature.properties[i]}</div>`);
         
         // infoPopup+=$(`#location`);
        

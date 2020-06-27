@@ -57,17 +57,16 @@
 
 .party-name-grid {
   display: grid;
-  grid-template-columns:150px 150px; 
+  grid-template-columns: 150px 150px;
   column-gap: 5px;
   row-gap: 3px;
   margin-bottom: 10px;
   /* grid-template-rows */
 }
 
-.list-names
-{
-  padding:0 0 0 5px ;
-  background-color: rgba(83, 83, 83,.5);
+.list-names {
+  padding: 0 0 0 5px;
+  background-color: rgba(83, 83, 83, .5);
 }
 
 #slider {
@@ -101,6 +100,19 @@
   font-weight: bold;
 }
 
+.location-list li:hover {
+  /* border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px; */
+  cursor: pointer;
+  background: #5c5c5c;
+  /* border-left: 8px solid red; */
+}
+
+
+.tooltip-label {
+  font-size: 14px;
+  font-weight: bold;
+}
 
 @media (max-width:576px) {
   #legend-container {

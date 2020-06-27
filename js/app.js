@@ -100,8 +100,37 @@
 
 
   function drawMap(data) {
+   const geoJsonParty={};
 
-    console.log(data);
+   for(party in polParties)
+   {
+    console.log(party);// inspect the output
+    let options={
+      pointToLayer: function(feature,latlng)
+      {
+        return L.circleMarker(latlng,{
+          color:polParties[party],
+          radius:2,
+          // opacity:0,
+          // weight:3,
+          // fillOpacity:0
+
+        });
+      },// end of pointToLayer
+      onEachFeature:function(feature,layer)
+      {
+        console.log(layer);
+        layer.on('click',function(e){
+          retrieveInfo(layer,$('#sliderVal').val());
+        })
+      }
+    }
+    geoJsonParty[party]=L.geoJSON(data,options).addTo(map);
+   }// end of for loop
+console.log(geoJsonParty);
+
+    // console.log(features);
+   
     // updateMap(data, $("#sliderVal").val());
     // addPartyList(data, $("#sliderVal").val());
     // locationList(data);

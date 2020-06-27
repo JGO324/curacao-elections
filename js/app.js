@@ -29,7 +29,6 @@
       // console.log(e.target)// inspect the output
       // console.log(e.target.toGeoJSON())// inspect the output and compare the result with the above output
       drawMap(e.target.toGeoJSON()); //pass the data as a geoJSON format to the caller drawMap
-      // drawLegend(e.target.toGeoJSON())
     })
     .on('error', function (e) {
       // console.log(e.error[0].message);// inspect the output
@@ -51,7 +50,7 @@
     L.DomEvent.disableScrollPropagation(legend);
     L.DomEvent.disableClickPropagation(legend);
 
-    // return the selection
+    // return the legend
     return legend;
 
   }
@@ -75,7 +74,7 @@
 
   }
 
-  sliderControl.addTo(map);
+  sliderControl.addTo(map);// add sliderControl to the map
 
 
   const years = [];
@@ -125,7 +124,7 @@
             retrieveInfo(layer, $('#sliderVal').val());
             const coord=[layer.feature.geometry.coordinates[1],layer.feature.geometry.coordinates[0]];
             map.flyTo(coord,18);
-          })
+          }),
           layer.on('mouseover', function (e) {
             console.log(layer.feature.properties.Location);// inspect the output
             let votingLocation=`<label class="tooltip-label">Location nr: ${layer.feature.properties.sd_id}</label></br>
@@ -134,16 +133,17 @@
             // retrieveInfo(layer, $('#sliderVal').val());
             
           })
+
         }
       }
       geoJsonParty[party] = L.geoJSON(data, options).addTo(map); // add all the parties on map
     } // end of for loop
 
-    // console.log(geoJsonParty);// inspect the output
+    console.log(geoJsonParty);// inspect the output
     mapTheParties(geoJsonParty, $('#sliderVal').val());
     // console.log(features);
     // updateMap(data, $("#sliderVal").val());
-      addPartyList(data,geoJsonParty, $("#sliderVal").val());
+    addPartyList(data,geoJsonParty, $("#sliderVal").val());
     locationList(data);
     sliderUI(data);
     $('#year-display span').html($('#sliderVal').val());
@@ -171,7 +171,8 @@
       });
 
     }
-  }
+
+  }// end of mapTheParties function
 
   function calculateRadius(val) {
 
@@ -179,18 +180,13 @@
     return radius * 5; // adjust the radius with .5 scale factor
   } // end of calculateRadius()
 
-  function resizeCircles() {
-
-
-  } // end of resizeCircles()
-
   function addPartyList(data,geoJsonObject, currentY) {
     let parties = [];
     // console.log(data.features);
     data.features.forEach(feature => {
       // console.log(feature.properties);
       let name = Object.entries(feature.properties);
-      console.log(name);
+      // console.log(name);
       for (var i = 0; i < name.length; i++) {
         if (i > 3) {
           // console.log(name[i], feature);
@@ -211,14 +207,15 @@
         }
       }
     });
-
+    const selectedPartiesList={};
     for (let i = 0; i < parties.length; i++) {
       for (var x in polParties) {
         if (x == parties[i]) {
           // console.log(parties[i], x); // inspect output
           // check for matched names
           if (parties[i] == x) {
-            $(".list-parties").append(`<li id="${parties[i]}_${currentY}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
+            console.log(parties[i]);
+            // $(".list-parties").append(`<li id="${parties[i]}_${currentY}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
           }
 
         }
@@ -258,10 +255,12 @@
           onEachFeature: function (feature, layer) {
             layer.on("click", function () {
               retrieveInfo(layer, currentYear);
-            });
+            })
+          
           }
         }
-
+        console.log(key);
+        // retrieveInfo();
         let l = L.geoJSON(data, options).addTo(map);
       }
     }
@@ -296,24 +295,6 @@
         'coordinates': coords
       }; // store each location Id the coordinates of that location.
     }
-
-
-
-    // $(".location-item").on("mouseover", function (e) {
-
-    //   // $("#" + e.target.id).css("background-color", "green");
-    //   // $("#" + e.target.id).css("cursor", "pointer");
-    //   //  let splitItemId=e.target.id.split("_");
-    // });
-
-
-    // $(".location-item").on("mouseout", function (e) {
-
-    //   // console.log($("#"+e.target.id).html());
-    //   $("#" + e.target.id).css("background-color", "#1E1E1E");
-
-    // });
-
 
     $(".location-item").on("click", function (e) {
       //  console.log(coordList); //inspect the output
@@ -362,20 +343,7 @@
       }
 
     });
-    // console.log($(`#${i}`).length);
+  
+  }// end of retrieveInfo function
 
-
-    // data.bindPopup(infoPopup).openPopup();
-
-
-
-  }
-
-  function makeVisible(data, currentY) {
-    console.log(data, currentY);
-    $(".list-parties li").on('click', function (e) {
-      console.log(e.target.id);
-
-    });
-  }
 })();

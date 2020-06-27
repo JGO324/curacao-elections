@@ -214,8 +214,9 @@
           // console.log(parties[i], x); // inspect output
           // check for matched names
           if (parties[i] == x) {
-            console.log(parties[i]);
-            // $(".list-parties").append(`<li id="${parties[i]}_${currentY}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
+            selectedPartiesList[parties[i]]=polParties[x];
+            // console.log(parties[i],polParties[x]);
+            $(".list-parties").append(`<li id="${parties[i]}_${currentY}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
           }
 
         }
@@ -225,13 +226,40 @@
     
     }// end of for loop
     
-    $(`.list-parties li`).on('click',function(e){
-      console.log(e.target.id);
-    });
 
+    for(let x in selectedPartiesList)
+    {
+      console.log(x,selectedPartiesList[x]);
+      $(`#${x}_${currentY}`).on('click',function(e){
+        // console.log(e.target.id,$(this));
+        let color=$(this).css('background-color');
+        if(color=='rgb(30, 30, 30)')
+        {
 
-    // makeVisible(data, currentY);
+          console.log('active layer',color);
+        }
+        else
+        {
+
+          console.log('disable others layer');
+          removeParties(`${x}`,geoJsonObject);
+        }
+
+      });
+    }
+
   } // end of addPartyList function
+
+  function removeParties(partyN,layerParty){
+    for(let x in layerParty)
+    {
+      if(x==partyN)
+      {
+        console.log(x,layerParty[x]);
+      }
+    }
+    
+  }// end of removeParties function
 
   function updateMap(data, currentYear) {
     for (var key in data.features[0].properties) {

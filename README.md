@@ -48,3 +48,7 @@ And for the geographic location I will use the [Basiskaart Curacao](http://basis
 	- CSV, GeoJSON
 - **Hosting platform**
 	- Github.
+
+------
+
+[Go to my portofolio for more map project](https://jgo324.github.io)

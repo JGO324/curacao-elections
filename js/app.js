@@ -110,9 +110,9 @@
       let options = {
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {
-            // color: polParties[party],
+            color: polParties[party],
             radius: 0,
-            opacity:0,
+            // opacity:0,
             // weight:3,
             fillOpacity:0
 
@@ -143,7 +143,7 @@
     // console.log(geoJsonParty); // inspect the output
     mapTheParties(geoJsonParty, $('#sliderVal').val());
     // console.log(features);
-    updateMap(data, $("#sliderVal").val());
+    // updateMap(data, $("#sliderVal").val());
     addPartyList(data, geoJsonParty, $("#sliderVal").val());
     locationList(data);
     sliderUI(data);

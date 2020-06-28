@@ -111,10 +111,10 @@
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {
             color: polParties[party],
-            radius: 0,
-            // opacity:0,
-            // weight:3,
-            fillOpacity:0
+            radius: 2,
+            opacity: 0,
+            weight: 3,
+            fillOpacity: 0
 
           });
         }, // end of pointToLayer
@@ -147,7 +147,7 @@
     addPartyList(data, geoJsonParty, $("#sliderVal").val());
     locationList(data);
     sliderUI(data);
-    $('#year-display span').html($('#sliderVal').val());
+    // $('#year-display span').html($('#sliderVal').val());
   } // end of drawMap function
 
   function mapTheParties(geoJsonObject, currentY) {
@@ -164,6 +164,8 @@
             layer.setStyle({
               color: polParties[partyLayer],
               radius: calculateRadius(Number(props[key[0]])),
+              opacity: 1,
+              weight: 3,
               fillOpacity: 0,
             });
           }
@@ -195,7 +197,7 @@
           // console.log(pol_party);
           let split = pol_party.split('_');
           let splitPolParty = split[0];
-          // let year = split[1];
+   
           // console.log(splitPolParty);
           // console.log(pol_party,splitPolParty, year);
           if (pol_party.includes(splitPolParty + '_' + currentY)) {
@@ -206,7 +208,7 @@
           }
 
         }
-      }
+      }// end of for loop
     });
     const selectedPartiesList = {};
     for (let i = 0; i < parties.length; i++) {
@@ -236,8 +238,8 @@
         if (color == 'rgb(30, 30, 30)') {
 
           console.log('active layer', color);
-          $(`#${x}_${currentY}`).css('background-color',selectedPartiesList[x]);
-          $(`#${x}_${currentY}`).css('color','black');
+          $(`#${x}_${currentY}`).css('background-color', selectedPartiesList[x]);
+          $(`#${x}_${currentY}`).css('color', 'black');
 
           addParties(`${x}`, geoJsonObject, currentY);
 
@@ -265,7 +267,7 @@
           layer.setStyle({
             opacity: 1
           });
-          layer.bringToFront();
+          // layer.bringToFront();
         });
       }
     }
@@ -315,7 +317,7 @@
 
           }
         }
-        console.log(key);
+        // console.log(key);// inspect output
         // retrieveInfo();
         let l = L.geoJSON(data, options).addTo(map);
       }
@@ -346,10 +348,10 @@
       let props = data.features[x].properties; // declare and assign properties
       let coords = data.features[x].geometry.coordinates; // declare and assign coordinates
 
-      $(".location-list").append(`<li class="location-item" id="loc_${props.sd_id}">${props.sd_id} ${props.Location}</li>`); // create list
       coordList[`loc_${props.sd_id}`] = {
         'coordinates': coords
       }; // store each location Id the coordinates of that location.
+      $(".location-list").append(`<li class="location-item" id="loc_${props.sd_id}">${props.sd_id} ${props.Location}</li>`); // create list
     }
 
     $(".location-item").on("click", function (e) {

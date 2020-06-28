@@ -1,4 +1,4 @@
-# Curacao-elections [Link to Curacao elections map](jgo324.github.io/curacao-elections)
+# Curacao-elections [Link to Curacao elections map](https://jgo324.github.io/curacao-elections)
 ## Map project proposal (Mapping the Curacao Election)
 ## Introduction
 In the past years the elections on Curacao were poor in the way the election was presented to the public. They present the results in Excel format on TV. The result are not in real time, when they close voting locations, they began to count the votes and fill in the columns in Excel.

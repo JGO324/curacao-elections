@@ -123,7 +123,7 @@
               // console.log(layer.feature.geometry.coordinates); // inspect the output
               retrieveInfo(layer, $('#sliderVal').val());
               const coord = [layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]];
-              console.log(coord);
+              // console.log(coord);// inspect the output
               map.flyTo(coord, 18);
             }),
             layer.on('mouseover', function (e) {
@@ -142,12 +142,10 @@
 
     // console.log(geoJsonParty); // inspect the output
     mapTheParties(geoJsonParty, $('#sliderVal').val());
-    // console.log(features);
-    // updateMap(data, $("#sliderVal").val());
     addPartyList(data, geoJsonParty, $("#sliderVal").val());
     locationList(data);
-    sliderUI(data);
-    // $('#year-display span').html($('#sliderVal').val());
+    sliderUI(data, geoJsonParty);
+    $('#year-display span').html($('#sliderVal').val());
   } // end of drawMap function
 
   function mapTheParties(geoJsonObject, currentY) {
@@ -184,7 +182,12 @@
   } // end of calculateRadius()
 
   function addPartyList(data, geoJsonObject, currentY) {
+
     let parties = [];
+    if ($('.list-parties')) {
+      $('.list-parties li').remove();
+    }
+
     // console.log(data.features);
     data.features.forEach(feature => {
       // console.log(feature.properties);
@@ -197,7 +200,7 @@
           // console.log(pol_party);
           let split = pol_party.split('_');
           let splitPolParty = split[0];
-   
+
           // console.log(splitPolParty);
           // console.log(pol_party,splitPolParty, year);
           if (pol_party.includes(splitPolParty + '_' + currentY)) {
@@ -208,7 +211,7 @@
           }
 
         }
-      }// end of for loop
+      } // end of for loop
     });
     const selectedPartiesList = {};
     for (let i = 0; i < parties.length; i++) {
@@ -226,7 +229,6 @@
 
       } // end of for loop
 
-
     } // end of for loop
 
 
@@ -237,11 +239,9 @@
         let color = $(this).css('background-color');
         if (color == 'rgb(30, 30, 30)') {
 
-          console.log('active layer', color);
           $(`#${x}_${currentY}`).css('background-color', selectedPartiesList[x]);
           $(`#${x}_${currentY}`).css('color', 'black');
-
-          addParties(`${x}`, geoJsonObject, currentY);
+          addParties(`${x}`, geoJsonObject);
 
         } else {
 
@@ -254,16 +254,12 @@
 
   } // end of addPartyList function
 
-  function addParties(partyN, layerParty, currentYear) {
+  function addParties(partyN, layerParty) {
     for (let x in layerParty) {
       if (x == partyN) {
         // console.log(layerParty[x]);
         // console.log(x,partyN,layerParty[x],currentYear);
         layerParty[x].eachLayer(layer => {
-          // console.log(layer);
-          // $(`#${x}_${currentYear}`).css('background-color','rgb(30,30,30)');
-
-          // console.log(layer.feature.properties);
           layer.setStyle({
             opacity: 1
           });
@@ -277,7 +273,7 @@
   function removeParties(partyN, layerParty, currentYear) {
     for (let x in layerParty) {
       if (x != partyN) {
-        console.log(x, partyN, currentYear);
+        // console.log(x, partyN, currentYear);
         layerParty[x].eachLayer(layer => {
           $(`#${x}_${currentYear}`).css('background-color', 'rgb(30,30,30)');
           $(`#${x}_${currentYear}`).css('color', 'whitesmoke');
@@ -288,12 +284,14 @@
         });
       }
     }
-
+    
   } // end of removeParties function
-
-  function updateMap(data, currentYear) {
+  
+  function updateMap(data, currentYear, geoJsonObject) {
+    
+    $('#year-display span').html(currentYear);
     for (var key in data.features[0].properties) {
-
+      
       if (key.includes("_" + currentYear) && key != "sd_id") {
         // console.log(key)
         let politicaParty = key;
@@ -311,29 +309,37 @@
             });
           },
           onEachFeature: function (feature, layer) {
+            layer.bringToFront();
             layer.on("click", function () {
+
               retrieveInfo(layer, currentYear);
             })
-
+            layer.on("mouseover", function () {
+              
+              // console.log(layer.feature.properties.Location); // inspect the output
+              let votingLocation = `<label class="tooltip-label">Location nr: ${layer.feature.properties.sd_id}</label></br>
+              <label class="tooltip-label">${layer.feature.properties.Location}</label>`;
+              layer.bindTooltip(votingLocation).openTooltip();
+              // retrieveInfo(layer, $('#sliderVal').val());
+            })
+            
           }
         }
-        // console.log(key);// inspect output
-        // retrieveInfo();
-        let l = L.geoJSON(data, options).addTo(map);
-      }
-    }
-    $('#year-display span').html(currentYear);
+        L.geoJSON(data, options).addTo(map);
+      } 
+    } // end of for loop
+    addPartyList(data, geoJsonObject, currentYear);
     // let l = L.geoJSON(data, options).addTo(map);
   } // end of updateMap function
-
-  function sliderUI(data) {
+  function sliderUI(data, geoJsonObject) {
 
     $('#slider input[type=range]').on('input', function () {
       // console.log(this.value); // inspect the output
       const currentYear = this.value; // declare and assign this.value to the currentGrade
-
+      
       // resizeCircles(girlsLayer, boysLayer, currentYear); // pass the arguments variables to the caller resizeCircle function.
-      updateMap(data, currentYear);
+      updateMap(data, currentYear, geoJsonObject);
+      updateInfoWindow(data, currentYear, '', '');
     })
 
   } // end of sliderUI function
@@ -347,11 +353,13 @@
       // console.log(data.features[x]);
       let props = data.features[x].properties; // declare and assign properties
       let coords = data.features[x].geometry.coordinates; // declare and assign coordinates
-
       coordList[`loc_${props.sd_id}`] = {
         'coordinates': coords
       }; // store each location Id the coordinates of that location.
-      $(".location-list").append(`<li class="location-item" id="loc_${props.sd_id}">${props.sd_id} ${props.Location}</li>`); // create list
+      $(".location-list").append(`<li class="location-item" id="loc_${props.sd_id}">${props.sd_id} ${props.Location}
+      <input type='hidden' class='locId' value='${props.sd_id}'/>
+      <input type='hidden' id='loc-name' value='${props.Location}' />
+      </li>`); // create list
     }
 
     $(".location-item").on("click", function (e) {
@@ -359,6 +367,7 @@
       for (var loc in coordList) {
         if (loc == e.target.id) {
           // console.log(x,coordList[loc].coordinates);// inspect output
+          $('.party-name').hide();
           const latlng = [coordList[loc].coordinates[1], coordList[loc].coordinates[0]];
           map.flyTo(latlng, 18, {
             duration: .5
@@ -367,7 +376,6 @@
       }
 
     });
-
   } // end of locationList function
 
   function retrieveInfo(data, currentY) {
@@ -378,8 +386,10 @@
     if ($('.list-names')) {
       $('.list-names').remove();
     }
+
+    $('.party-name').show();
     // infoPopup=$('#location-name').html(data.feature.properties.Location);
-    infoPop = $('.party-name').html(`<h1>location nr: ${data.feature.properties.sd_id}</br>${data.feature.properties.Location}</h1>`);
+    infoPop = $('.party-name').html(`<input type='hidden' id='voting-location' value='${data.feature.properties.sd_id}'></input><h1>location nr: ${data.feature.properties.sd_id}</br>${data.feature.properties.Location}</h1>`);
     infoPopup = $('.party-name').append('<div class="party-name-grid"></div>');
     for (var i in data.feature.properties) {
       if (i.includes(currentY)) {
@@ -403,5 +413,39 @@
     });
 
   } // end of retrieveInfo function
+
+  function updateInfoWindow(data, currentY) {
+    // let splitLocation=flyToLocation.split('_');
+    // const updateParties = {};
+    let infoPopup = '';
+    if ($('.list-names')) {
+      $('.list-names').remove();
+    } // en of if statement
+    // console.log(data);// inspect output
+    for (let x in data.features) {
+      let layerProps = data.features[x].properties;
+      //  console.log(layer.properties.Location,'|',$('#voting-location').val(),$('#sliderVal').val());// inspect output
+      if ($('#voting-location').val() == layerProps.sd_id) {
+        // infoPopup = $('.party-name').html(`<input type='hidden' id='voting-location' value='${layerProps.sd_id}'></input><h1>location nr: ${layerProps.sd_id}</br>${layerProps.Location}</h1>`);
+        // infoPopup = $('.party-name').append('<div class="party-name-grid"></div>');
+
+        for (let l of Object.entries(layerProps)) {
+
+          if (l[0].includes(currentY)) {
+            let splitName = l[0].split('_');
+
+            // console.log(l[0], l[1],splitName[0]);// inpsect output
+            infoPopup += $('.party-name-grid').append(`<div class='list-names' id='${l[0]}'>${splitName[0]}: ${l[1]}</div>`);
+
+          } // end of if statement
+
+        } // end of for loop
+
+      }
+
+    } //end of for loop
+
+
+  } // end of updateInfoWindow function
 
 })();

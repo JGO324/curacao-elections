@@ -74,7 +74,7 @@
 
   }
 
-  sliderControl.addTo(map);// add sliderControl to the map
+  sliderControl.addTo(map); // add sliderControl to the map
 
 
   const years = [];
@@ -110,40 +110,41 @@
       let options = {
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {
-            color: polParties[party],
-            radius: 2,
-            // opacity:0,
+            // color: polParties[party],
+            radius: 0,
+            opacity:0,
             // weight:3,
-            // fillOpacity:0
+            fillOpacity:0
 
           });
         }, // end of pointToLayer
         onEachFeature: function (feature, layer) {
           layer.on('click', function (e) {
-            console.log(layer.feature.geometry.coordinates);// inspect the output
-            retrieveInfo(layer, $('#sliderVal').val());
-            const coord=[layer.feature.geometry.coordinates[1],layer.feature.geometry.coordinates[0]];
-            map.flyTo(coord,18);
-          }),
-          layer.on('mouseover', function (e) {
-            console.log(layer.feature.properties.Location);// inspect the output
-            let votingLocation=`<label class="tooltip-label">Location nr: ${layer.feature.properties.sd_id}</label></br>
+              // console.log(layer.feature.geometry.coordinates); // inspect the output
+              retrieveInfo(layer, $('#sliderVal').val());
+              const coord = [layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]];
+              console.log(coord);
+              map.flyTo(coord, 18);
+            }),
+            layer.on('mouseover', function (e) {
+              // console.log(layer.feature.properties.Location); // inspect the output
+              let votingLocation = `<label class="tooltip-label">Location nr: ${layer.feature.properties.sd_id}</label></br>
             <label class="tooltip-label">${layer.feature.properties.Location}</label>`;
-            layer.bindTooltip(votingLocation).openTooltip();
-            // retrieveInfo(layer, $('#sliderVal').val());
-            
-          })
+              layer.bindTooltip(votingLocation).openTooltip();
+              // retrieveInfo(layer, $('#sliderVal').val());
+
+            })
 
         }
       }
       geoJsonParty[party] = L.geoJSON(data, options).addTo(map); // add all the parties on map
     } // end of for loop
 
-    console.log(geoJsonParty);// inspect the output
+    // console.log(geoJsonParty); // inspect the output
     mapTheParties(geoJsonParty, $('#sliderVal').val());
     // console.log(features);
-    // updateMap(data, $("#sliderVal").val());
-    addPartyList(data,geoJsonParty, $("#sliderVal").val());
+    updateMap(data, $("#sliderVal").val());
+    addPartyList(data, geoJsonParty, $("#sliderVal").val());
     locationList(data);
     sliderUI(data);
     $('#year-display span').html($('#sliderVal').val());
@@ -157,13 +158,13 @@
         // console.log(Object.entries(props));// inspect the output
         for (key of Object.entries(props)) {
           // console.log(key);
-          if (key[0]==`${partyLayer}_${currentY}`) {
-            
+          if (key[0] == `${partyLayer}_${currentY}`) {
+
             // console.log(props,key[0]);// inspect the output
             layer.setStyle({
-              color:polParties[partyLayer],
-              radius:calculateRadius(Number(props[key[0]])),
-              fillOpacity:0,
+              color: polParties[partyLayer],
+              radius: calculateRadius(Number(props[key[0]])),
+              fillOpacity: 0,
             });
           }
         }
@@ -172,7 +173,7 @@
 
     }
 
-  }// end of mapTheParties function
+  } // end of mapTheParties function
 
   function calculateRadius(val) {
 
@@ -180,7 +181,7 @@
     return radius * 5; // adjust the radius with .5 scale factor
   } // end of calculateRadius()
 
-  function addPartyList(data,geoJsonObject, currentY) {
+  function addPartyList(data, geoJsonObject, currentY) {
     let parties = [];
     // console.log(data.features);
     data.features.forEach(feature => {
@@ -207,42 +208,43 @@
         }
       }
     });
-    const selectedPartiesList={};
+    const selectedPartiesList = {};
     for (let i = 0; i < parties.length; i++) {
       for (var x in polParties) {
         if (x == parties[i]) {
           // console.log(parties[i], x); // inspect output
           // check for matched names
           if (parties[i] == x) {
-            selectedPartiesList[parties[i]]=polParties[x];
+            selectedPartiesList[parties[i]] = polParties[x];
             // console.log(parties[i],polParties[x]);
             $(".list-parties").append(`<li id="${parties[i]}_${currentY}" style="background:${polParties[x]}">${parties[i]}</li>`); // create list
           }
 
         }
 
-      }// end of for loop
+      } // end of for loop
 
-    
-    }// end of for loop
-    
 
-    for(let x in selectedPartiesList)
-    {
-      console.log(x,selectedPartiesList[x]);
-      $(`#${x}_${currentY}`).on('click',function(e){
+    } // end of for loop
+
+
+    for (let x in selectedPartiesList) {
+      // console.log(x, selectedPartiesList[x]);
+      $(`#${x}_${currentY}`).on('click', function (e) {
         // console.log(e.target.id,$(this));
-        let color=$(this).css('background-color');
-        if(color=='rgb(30, 30, 30)')
-        {
+        let color = $(this).css('background-color');
+        if (color == 'rgb(30, 30, 30)') {
 
-          console.log('active layer',color);
-        }
-        else
-        {
+          console.log('active layer', color);
+          $(`#${x}_${currentY}`).css('background-color',selectedPartiesList[x]);
+          $(`#${x}_${currentY}`).css('color','black');
 
-          console.log('disable others layer');
-          removeParties(`${x}`,geoJsonObject);
+          addParties(`${x}`, geoJsonObject, currentY);
+
+        } else {
+
+          // console.log('disable others layer');
+          removeParties(`${x}`, geoJsonObject, currentY);
         }
 
       });
@@ -250,16 +252,42 @@
 
   } // end of addPartyList function
 
-  function removeParties(partyN,layerParty){
-    for(let x in layerParty)
-    {
-      if(x==partyN)
-      {
-        console.log(x,layerParty[x]);
+  function addParties(partyN, layerParty, currentYear) {
+    for (let x in layerParty) {
+      if (x == partyN) {
+        // console.log(layerParty[x]);
+        // console.log(x,partyN,layerParty[x],currentYear);
+        layerParty[x].eachLayer(layer => {
+          // console.log(layer);
+          // $(`#${x}_${currentYear}`).css('background-color','rgb(30,30,30)');
+
+          // console.log(layer.feature.properties);
+          layer.setStyle({
+            opacity: 1
+          });
+          layer.bringToFront();
+        });
       }
     }
-    
-  }// end of removeParties function
+
+  } // end of removeParties function
+
+  function removeParties(partyN, layerParty, currentYear) {
+    for (let x in layerParty) {
+      if (x != partyN) {
+        console.log(x, partyN, currentYear);
+        layerParty[x].eachLayer(layer => {
+          $(`#${x}_${currentYear}`).css('background-color', 'rgb(30,30,30)');
+          $(`#${x}_${currentYear}`).css('color', 'whitesmoke');
+          // console.log(layer.feature.properties);
+          layer.setStyle({
+            opacity: 0
+          });
+        });
+      }
+    }
+
+  } // end of removeParties function
 
   function updateMap(data, currentYear) {
     for (var key in data.features[0].properties) {
@@ -284,7 +312,7 @@
             layer.on("click", function () {
               retrieveInfo(layer, currentYear);
             })
-          
+
           }
         }
         console.log(key);
@@ -364,14 +392,14 @@
     }
 
     $('.top-bar i').on('click', function (e) {
-      console.log($('.party-name').children().length); // inspect the output
+      // console.log($('.party-name').children().length); // inspect the output
       // check if party-name class has children. Ifo so, remove party-name class on close icon clicked
       if ($('.party-name').children().length > 0) {
         $('.party-name').children().remove(); // remove class
       }
 
     });
-  
-  }// end of retrieveInfo function
+
+  } // end of retrieveInfo function
 
 })();

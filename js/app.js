@@ -11,12 +11,15 @@
   });
 
 
-  var accessToken = 'pk.eyJ1IjoiamdvMzI0IiwiYSI6ImNrMDlqa2dxdDA4cDAzZm4xZTg0b3BlNzUifQ.CzI3VsMtEP1CeQkNBjL3_w'
+  var accessToken = 'pk.eyJ1IjoiamdvMzI0IiwiYSI6ImNraDZ2MThpYzBhdnEycG94NndsNThhdmUifQ.ucwO5htBwRcJeeptws-BTg';
+  // var url='https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=';// old link
+  var url='https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=';// new link
 
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + accessToken, {
+
+  L.tileLayer(url + accessToken, {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     // maxZoom: 18,
-    id: 'mapbox.dark',
+    id: 'mapbox/dark-v10',
     accessToken: accessToken
   }).addTo(map);
 
